@@ -1,76 +1,154 @@
+
 # The Three-Point Revolution: Is It Changing Basketball for Better or Worse?
 
 ## Overview
-This project analyzes the NBA’s shift toward three-point shooting and its impact on competitiveness, game outcomes, and fan engagement. By examining historical game data, win/loss records, and social media sentiment, this study aims to determine whether the three-point era has improved or harmed the game.
 
-My approach combined quantitative statistics with qualitative fan perspectives to build a multidimensional view of the modern NBA. I explored not just **how many** three-pointers teams take, but **how well** they shoot them, how strategies cluster, and what fans have to say.
+This project explores the rise of the three-point shot in the NBA and its implications for competitiveness, team success, and fan sentiment. By analyzing four decades of NBA game data alongside Reddit discussions, I set out to answer the central question: Has the three-point revolution made basketball better or worse?
+
+My family is full of passionate basketball fans, so this topic sparked a lot of conversations in our house. With recent headlines claiming that teams are shooting too many threes and quotes from legends like Michael Jordan criticizing the change, it felt timely to dig into the numbers and see what they really say.
+
+---
 
 ## Data Sources
-- **NBA Statistics**: Team-level data from Basketball Reference and NBA.com/stats, including three-pointers attempted, shooting efficiency, pace, and win percentage from 1980–2024.
-- **Social Media Sentiment**: Reddit posts from r/nba that mention “three” or “three-pointer,” analyzed using natural language processing tools to extract sentiment and track trends over time.
+
+- **NBA Statistics (1980–2024)** from [Basketball Reference](https://www.basketball-reference.com/) and [NBA.com/stats](https://www.nba.com/stats)
+  - Includes team-level data: win percentage, shooting efficiency, offensive metrics, etc.
+- **Reddit Sentiment (r/nba)** using scraped posts related to three-point shooting from 2010–2024.
+  - Cleaned and processed with Vader sentiment analysis.
 
 ---
 
-## Key Visualizations
+## Key Questions
 
-### Total Three-Pointers Attempted by Year
+- How has the volume and accuracy of three-point shooting changed over time?
+- Do teams that shoot more or shoot better from three win more?
+- Can we group teams by their three-point shooting style and see clear patterns in success?
+- What do fans think about the league’s shift to three-point-heavy play?
+
+---
+
+## Visual Trends & Commentary
+
+### 📈 Growth in Three-Pointers Attempted Over Time
+
 ![Total 3PA by Year](visualizations/total_3pa_by_year_2.png)
-This chart highlights the explosive rise in three-pointers attempted, especially after 2015. We also see an earlier spike during the shortened three-point line experiment from 1994–1997.
 
-### Three-Point Accuracy Over Time
-![3P Percentage](visualizations/3pt_percentage_overtime.png)
-Three-point accuracy has steadily improved over time. League averages stabilized around 2010, suggesting that players have adjusted to the shot and its role in team offense.
+Three-pointers attempted per game has exploded — especially after 2015. Teams now average over 35 threes per game, compared to under 10 in the 1980s.
 
-### All-Time Three-Point Leaders
-![Top 3P Leaders](visualizations/top_10_3p_leaders.png)
-Steph Curry stands far ahead of all-time leaders, symbolizing the modern three-point revolution. Most leaders are active or recent players, showing how the shot has transformed scoring profiles.
+---
 
-### Team Three-Pointers Attempted by Season
+### 🎯 Three-Point Accuracy
+
+![3P% Over Time](visualizations/3pt_percentage_overtime.png)
+
+- Accuracy (three-point percentage) improved significantly from the 1980s to the early 2010s.
+- Gains stabilized around 2015, suggesting that further volume growth isn’t necessarily tied to increased accuracy.
+
+---
+
+### 🏆 All-Time Three-Point Leaders
+
+![Top 10 All-Time 3P Leaders](visualizations/top_10_3p_leaders.png)
+
+Stephen Curry stands alone — redefining what’s possible from the arc. Most of the top 10 are modern players, a clear reflection of the league's evolving playstyle.
+
+---
+
+### 🔍 Team-Level Trends
+
 ![Team 3PA Over Time](visualizations/nba_team_3pa_over_time.png)
-Nearly every team has ramped up three-pointers attempted over time. Some, like Houston and Golden State, pushed the boundaries of volume, redefining expectations for modern offense.
+
+Every team is attempting more threes. The interactive version of this EDA lets users select individual teams to explore style differences across franchises and eras.
 
 ---
 
-## Analytical Highlights
+## Statistical Analysis
 
-### Clustered Team Strategies
-![Cluster Map](visualizations/team_clusters_labeled.png)
-Using PCA (Principal Component Analysis) and KMeans clustering, teams naturally group into 3 strategy styles:
-- **Efficient 3-point shooters with high win rates**
-- **High-volume three-point teams with moderate success**
-- **Low three-point teams with low win rates**
+### 📊 Regression: Does Three-Point Shooting Predict Wins?
 
-### Which Style Wins?
+Regression models by era show a shift:
+
+- **Early Era (2000–2010):** Three-pointers attempted had a weak or negative relationship with win percentage.
+- **Modern Era (2017–2024):** Three-point percentage became a statistically significant predictor. For instance:
+  - 3P% coefficient = 6.89, p = 0.006
+  - Model R² = 0.524
+
+Conclusion: **Shooting efficiently from deep** matters more than simply increasing volume.
+
+---
+
+### 🧠 Clustering: Team Shooting Styles
+
+![Clustered Teams](visualizations/team_clusters_labeled.png)
+
+Using K-Means and PCA, I grouped teams into three styles:
+
+- **Efficient shooters with high win %**
+- **High volume but moderate win %**
+- **Low usage, low success**
+
+Exemplar teams:  
+- Efficient: 2022 Cavaliers  
+- Volume-heavy: 2002 Pistons  
+- Low usage: 2007 Knicks
+
+---
+
+### 📈 Which Style Wins?
+
 ![Win% by Cluster](visualizations/win_pct_boxplot_by_cluster.png)
-Teams that shoot efficiently — not just frequently — win more games. ANOVA confirmed these differences were statistically significant with p < 0.001 and η² = 0.14. Tukey HSD tests showed significant pairwise gaps in win percentage among the clusters, with efficient teams outperforming both volume-heavy and low-volume squads.
+
+Statistical testing (Tukey HSD):
+- F-statistic = 183.4, p < 0.0001
+- All pairwise differences between clusters were statistically significant
+  - Efficient > Volume (Δ = 0.08, p < 0.001)
+  - Efficient > Low Usage (Δ = 0.208, p < 0.001)
+
+**Efficiency beats volume every time.**
 
 ---
 
-## Fan Sentiment Findings
+## Fan Sentiment Analysis
 
-### Sentiment Word Clouds
-![Sentiment Word Clouds](visualizations/word_clouds.png)
-I used natural language processing on Reddit threads to gauge fan sentiment. Despite dramatic increases in three-point attempts, fan tone has remained mostly stable — and even leaned positive post-2015. Common positive terms included “great” and “defense,” while negative mentions often focused on injuries or specific teams.
+![Reddit Word Cloud](visualizations/word_clouds.png)
+
+Sentiment trend line showed **no statistically significant trend** over time (p = 0.35). Despite concerns, fan tone remains generally stable — and often positive after 2015.
 
 ---
 
-## Summary of Findings
-- **Shooting well > shooting more**: Accuracy was consistently a better predictor of win percentage than volume.
-- **Franchise strategies differ**: Some teams (like Charlotte or San Antonio) maintain the same style year to year, while others (like the Warriors) have transformed.
-- **Fan reactions are nuanced**: While some nostalgia exists for the old-school game, most fans enjoy the faster pace and skill-based play.
-- **Statistical validation**: Regression models showed that three-point percentage became increasingly predictive of win percentage after 2015. ANOVA and clustering confirmed statistically distinct team styles and performance.
+## Machine Learning: Predicting Team Style
+
+Random Forest classifier trained on shooting metrics achieved:
+- **Accuracy**: ~85%
+- **Top predictors**: three-pointers attempted rate, effective FG%, and assist %
+
+Confusion matrix confirmed strong performance in classifying team style based on input metrics.
+
+---
+
+## Conclusion
+
+The three-point revolution **has made the NBA faster, more dynamic, and skill-driven** — but only when used wisely.
+
+- **Teams win more when they shoot better, not just more.**
+- **Franchises differ in how quickly (or whether) they adapt to the trend.**
+- **Fans are engaged, not alienated — even as three-point volume rises.**
 
 ---
 
 ## What’s Next?
-Future work could include:
-- Clustering **players** based on three-point efficiency and role
-- Comparing **playoff vs regular season** strategies
-- Adding **video-based shot quality** metrics
-- Analyzing blowout margins and game competitiveness
-- Expanding fan sentiment to include interviews, attendance trends, and regional/national variations
+
+- Cluster individual **players**, not just teams
+- Compare **playoff vs regular season strategies**
+- Integrate **video tracking** and shot quality models
+- Expand sentiment analysis to **forums, interviews, and attendance**
+- Explore the link between **blowouts and three-point strategy**
 
 ---
 
-## Author
-Charity Smith
+## References
+
+- Basketball Reference. (n.d.). *Basketball statistics and history*. Retrieved from https://www.basketball-reference.com/
+- NBA.com. (n.d.). *NBA stats*. Retrieved from https://www.nba.com/stats
+- Leff, J. (2024, October 30). *NBA teams are taking too many 3s and it’s becoming a problem*. USA Today For The Win.
+- Kota, D. (n.d.). *Michael Jordan tried to warn the NBA about shooting too many 3-pointers*. Sports Illustrated FanNation.
